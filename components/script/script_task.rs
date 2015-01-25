@@ -1154,6 +1154,7 @@ impl ScriptTask {
                                 let doc = window.r().Document().root();
                                 doc.r().begin_focus_transaction();
 
+<<<<<<< HEAD
                                 let event =
                                     Event::new(GlobalRef::Window(window.r()),
                                                "click".to_owned(),
@@ -1163,6 +1164,29 @@ impl ScriptTask {
                                 event.r().set_trusted(true);
                                 // https://html.spec.whatwg.org/multipage/interaction.html#run-authentic-click-activation-steps
                                 el.authentic_click_activation(event.r());
+=======
+                                let x = point.x.to_i32().unwrap_or(0);
+                                let y = point.x.to_i32().unwrap_or(0);
+
+                                let mouse_event =
+                                    MouseEvent::new(*window,
+                                               "click".to_string(),
+                                               true,
+                                               true,
+                                               Some(*window),
+                                               0i32,
+                                               x, y, x, y,
+                                               false, false, false, false,
+                                               0i16,
+                                               None).root();
+
+                                let event: JSRef<Event> = EventCast::from_ref(*mouse_event);
+                                // https://dvcs.3.org/hg/dom3events/raw-file/tip/html/DOM3-Events.html#trusted-events
+                                event.set_trusted(true);
+                                // https://html.spec.whatwg.org/multipage/interaction.html#run-authentic-click-activation-steps
+                                let el = ElementCast::to_ref(node).unwrap(); // is_element() check already exists above
+                                el.authentic_click_activation(event);
+>>>>>>> 34eb1b48bbe46748f1fdaf919e72d810f76eb830
 
                                 doc.r().commit_focus_transaction();
                                 window.r().flush_layout(ReflowGoal::ForDisplay, ReflowQueryType::NoQuery);
